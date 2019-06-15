@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="normalize.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<form method="post" action="pdo.php" style="border:1px solid #ccc">
+    <div class="container">
+        <h1>Add Products to the system</h1>
+        <p>Please fill in the details bellow to add the product into the system.</p>
+        <input type="text" placeholder="Product name" name="name">
+        <input type="number" placeholder="Enter the price" step="0.01" name="price">
+        <input type="number" placeholder="Enter quantity of the product"name="qty" min="1" max="9999">
+        <input type="text" placeholder="Enter unique id for the product" name="sku">
+        <input type="text" placeholder="Enter short description" name="description">
+        <select name="active">
+           <option value="1">Enable</option>
+            <option value="0">Disable</option>
+            </select>
+        <input type="number" placeholder="Enter the weight og the product" name="weight">
+        <input type="text" placeholder="Enter link for image location" name="img">
+
+
+        <div>
+            <button type="submit" class="addElement">ADD YOUR PRODUCT</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>
