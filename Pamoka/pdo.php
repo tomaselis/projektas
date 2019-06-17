@@ -58,31 +58,29 @@ function addNewProduct($name, $price, $qty, $sku, $description, $active, $weight
 }
 
 submitProduct($name, $price, $qty, $sku, $description, $active, $weight, $img);
-$stmt = connect()->query('SELECT * FROM prekes');
-$data = $stmt->fetchAll();
 
 
-function renderListItem()
+
+function renderListItem($product)
 {
-    $stmt = connect()->query('SELECT * FROM prekes');
-    foreach ($stmt as $row) {
+
+
         $html = '';
         $html .= '<tr>';
-        $html .= '<td>' . $row[0] . '</td>';
-        $html .= '<td>' . $row['name'] . '</td>';
-        $html .= '<td>' . $row['price'] . ' €</td>';
-        $html .= '<td>' . $row['qty'] . '</td>';
-        $html .= '<td>' . $row['sku'] . '</td>';
-        $html .= '<td>' . $row['description'] . '</td>';
-        $html .= '<td>' . $row['active'] . '</td>';
-        $html .= '<td>' . $row['weight'] . '</td>';
-        $html .= '<td><img src="' . $row["img"] . '"></td>';
+        $html .= '<td>' . $product[0] . '</td>';
+        $html .= '<td>' . $product['name'] . '</td>';
+        $html .= '<td>' . $product['price'] . ' €</td>';
+        $html .= '<td>' . $product['qty'] . '</td>';
+        $html .= '<td>' . $product['sku'] . '</td>';
+        $html .= '<td>' . $product['description'] . '</td>';
+        $html .= '<td>' . $product['active'] . '</td>';
+        $html .= '<td>' . $product['weight'] . '</td>';
+        $html .= '<td><img src="' . $product["img"] . '"></td>';
         $html .= '</tr>';
         return $html;
-    }
-}
 
-function renderGrid($data)
+}
+function renderGrid()
 {
     $html = '';
     $html .= '<table>';
@@ -99,17 +97,16 @@ function renderGrid($data)
     $html .= '</tr>';
 
 
+    $stmt = connect()->query('SELECT * FROM prekes');
+    $data = $stmt->fetchAll();
     foreach ( $data as $row) {
         $html .= renderListItem($row);
     }
-
     $html .= '</table>';
-
     return $html;
-
 }
+echo renderGrid();
 
-echo renderGrid($data);
 
 
 
@@ -218,59 +215,3 @@ function submitProduct($name, $price, $qty, $sku, $description, $active, $weight
 
 
 
-
-//function prepareEmail($str)
-//{
-//
-//    $str = strtolower($str);
-//    return $str;
-//
-//}
-
-//function generatePass($password)
-//{
-//
-//    return md5(md5($password));
-//}
-
-//function sanitizeInput($input)
-//{
-//
-//    $input = trim($input);
-//    return strip_tags($input);
-//}
-
-//function secPswMatch($password, $pswRepeat)
-//{
-//
-//    if ($password === $pswRepeat) {
-//        return true;
-//    }
-//    return false;
-//}
-
-
-
-//function emailValid($email)
-//{
-//
-//
-//    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-//        return true;
-//    }
-//    return false;
-//}
-
-//function emailInDb($email)
-//{
-//    $sql = "SELECT * FROM example WHERE email = ? ";
-//    $stmt = connect()->prepare($sql);
-//    $stmt->execute([$email]);
-//    if (!$stmt->fetch()) {
-//        return true;
-//    }
-//    return false;
-//}
-
-
-//print_r($_POST);
