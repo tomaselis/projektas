@@ -41,7 +41,13 @@ if (isset($path[1]) && !empty($path[1])) {
         $object = new $controller;
         //$object->{$method}();
         if (method_exists($object, $method)){ //Tikriname ar metodas egzistuoja
-            $object->{$method}(); // jeigu taip daro viskas kas vyksta if dalyje
+            if (isset($path[3]) && !empty($path[3]))
+            {
+                $object->{$method}($path[3]);
+            }else{
+                $object->{$method}();
+            }
+            // jeigu taip daro viskas kas vyksta if dalyje
         }else { // jeigu ne daro viskas kas aprasyta else
             $error405 = new \App\Controller\ErrorController(); //creating object by calling class ErrorController
             $error405->methodNotAllowed();  //calling method for error 405 from new object

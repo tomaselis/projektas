@@ -38,27 +38,29 @@ class Database
 
     public function where($fieldName, $value)
     {
-        $this->sql .= ' WHERE ' . $fieldName . '=' . $value;
+        $this->sql .= ' WHERE ' . $fieldName . '=' . "'$value'";
         return $this;
     }
 
-    public function insert($table, $tableFields, $values){
-        $this->sql .= "INSERT INTO ".$table." (".$tableFields.")"." VALUES "."(".$values.")";
+    public function insert($tableName, $tableFields, $values){
+        $this->sql .= "INSERT INTO ".$tableName." (".$tableFields.")"." VALUES "."(".$values.")";
         return $this;
     }
 
-    public function update(){
-        //
+    public function update($tableName, $setContent){
+        $this->sql .= "UPDATE $tableName SET $setContent";
         return $this;
     }
-
-    public function andWhere(){
-        //
+    public function set($fieldName, $value){
+        $this->sql .= ' SET '.$fieldName.' = '.$value;
         return $this;
     }
-
-    public function delete(){
-        //
+    public function andWhere($fieldName, $value){
+        $this->sql .= " AND $fieldName = '$value'";
+        return $this;
+    }
+    public function delete($table){
+        $this->sql .= 'DELETE '.$table;
         return $this;
     }
 
@@ -66,7 +68,9 @@ class Database
         $this->connect();
         $sql = $this->sql;
         $stmt = $this->pdo->prepare($sql);
+//        print_r($sql);
         $stmt->execute();
+        $this->sql = '';
         return $stmt;
     }
 

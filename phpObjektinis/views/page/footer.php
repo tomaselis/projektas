@@ -1,8 +1,7 @@
-
-
 <footer class="secfoot">
-    Copyright. Tomas Sabaliauskis.
+    <h4>Copyright. Tomas Sabaliauskis.</h4>
 </footer>
+
 </body>
 
 </html>

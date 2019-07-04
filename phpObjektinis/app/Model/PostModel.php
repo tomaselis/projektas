@@ -7,10 +7,25 @@ use Core\Database;
 
 class PostModel
 {
+    private $id = NULL; //=NULL tada apacioje reiktu apsirasyti kad nelygus NULL
     private $title;
     private $content;
     private $image;
     private $authorId;
+    private $db;
+
+
+
+    public function __construct()
+{
+    $this->db = new Database();
+}
+
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function setTitle($title)
     {
@@ -52,18 +67,19 @@ class PostModel
         return $this->authorId;
     }
 
-    public function getPosts()
+    public static function getPosts()
     {
         $db = new Database();
-        $db->select()->from('post');
+        $db->select()->from('post')->where('active', 1);
         return $db->getAll();
     }
 
     public function load($id)
     {
-        $db = new Database();
-        $db->select()->from('post')->where('id', $id);
-        $post = $db->get();
+        $this->db = new Database();
+        $this->db->select()->from('post')->where('id', $id);
+        $post = $this->db->get();
+        $this->id = $post->id;
         $this->title = $post->title;
         $this->content = $post->content;
         $this->authorId = $post->author_id;
@@ -71,21 +87,54 @@ class PostModel
     }
 
 
-    public function save()
+    public function update()
     {
+        $this->db = new Database();
+        $setContent = "title = '$this->title', content = '$this->content', img = '$this->image', author_id = '1' ";
+        $this->db->update('post', $setContent)->where('id', $this->id);
+        $this->db->get();
+    }
+
+
+    public function create()
+    {
+        $this->db = new Database();
         $tableFields = "title, content, img, author_id";
         $values = "'".$this->title."','".$this->content."','".$this->image."','".$this->authorId."'";
-        $db = new Database();
-        $db->insert('post', $tableFields, $values);
-        return $db->get();
+        $this->db->insert('post', $tableFields, $values);
+        $this->db->get();
+//        $tableFields = "title, content, img, author_id";
+//        $values = "'".$this->title."','".$this->content."','".$this->image."','".$this->authorId."'";
+//        $this->db = new Database();
+//        $this->db->insert('post', $tableFields, $values);
+//        return $this->db->get();
+    }
+
+
+    public function removeRecord($id) {
+        $this->db = new Database();
+        $this->db->delete()->from('post')->where('id', $id);
+        return $this->db->get();
+    }
+
+    public function save($id = null)
+    {
+        if($id !== null){
+            $this->id = $id;
+            $this->update();
+        }else{
+            $this->create();
+        }
     }
         //  $this->title
 
 
-    public function redirect($url, $statusCode = 303)
+
+    public function delete($id)
     {
-        header('Location: ' . $url, true, $statusCode);
-        die();
+        $setContent = "active = 0";
+        $this->db->update('post', $setContent)->where('id',$id);
+        $this->db->get();
     }
 }
 

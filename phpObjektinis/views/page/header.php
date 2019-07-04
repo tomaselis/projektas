@@ -18,7 +18,8 @@
             <a href="http://194.5.157.92/phpObjektinis/index.php">Home</a>
             <a href="http://194.5.157.92/phpObjektinis/index.php/post">Blog</a>
             <a href="http://194.5.157.92/phpObjektinis/index.php/post/create">Create Post</a>
-            <a href="#index.html">About</a>
+            <a href="#index.html">Login</a>
+            <a href="#index.html">Register</a>
             <a href="#index.html">Contact</a>
         </nav>
     </div>

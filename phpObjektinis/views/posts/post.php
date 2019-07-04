@@ -1,6 +1,7 @@
 
 
-<div>
+
+<div class="post-columSingle">
     <h2><?php echo $this->post->getTitle() ?></h2>
 
     <div class="single-post">
