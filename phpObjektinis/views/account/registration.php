@@ -5,7 +5,7 @@
         <input type="text" placeholder="Enter username" name="name">
         <input type="email" placeholder="Enter Email" name="email">
         <input type="password" placeholder="Enter Password" name="password" required>
-        <input type="password" placeholder="Repeat Password" name="pswRepeat" required>
+        <input type="password" placeholder="Repeat Password" name="password2" required>
         <div>
             <button type="submit" class="signupbtn">REGISTER</button>
         </div>

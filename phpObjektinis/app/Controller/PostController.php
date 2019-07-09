@@ -16,7 +16,7 @@ class PostController extends Controller
         $this->view->posts = \App\Model\PostModel::getPosts();
         $this->view->render('posts/posts');
 //      $postsObject = new \App\Model\PostModel();
-//        $this->view->posts = $postsObject->getPosts();
+//      $this->view->posts = $postsObject->getPosts();
 
 
         //$this->view->render('page/header');
@@ -104,4 +104,4 @@ class PostController extends Controller
         $helper->redirect('http://194.5.157.92/phpObjektinis/index.php');
     }
 }
-//      $postMOdelObject->redirect('http://194.5.157.92/phpObjektinis/index.php/post');
+//      $postModelObject->redirect('http://194.5.157.92/phpObjektinis/index.php/post');
