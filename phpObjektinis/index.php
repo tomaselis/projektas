@@ -6,6 +6,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);   //error handling
 
+include 'includes/functions.php';
+
+session_start();
+
 // kad veiktu autoloaderis turime sita parasyti autoloaderis is composser jason faile
 require __DIR__ . '/vendor/autoload.php';
 

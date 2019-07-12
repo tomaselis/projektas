@@ -52,8 +52,8 @@ nav a:hover {
 }
 
 .secfoot {
-    position:absolute;
-    bottom:0;
+    /*position:absolute;*/
+    /*bottom: 0;*/
     width:100%;
     height: 100px;
     background-color: #9ed4ca;
@@ -159,7 +159,7 @@ nav a:hover {
 
 /* post kurimo style sheetas */
 
-.container{
+.wrapper{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -174,7 +174,7 @@ nav a:hover {
     padding-top: 10px;
     padding-bottom: 10px;
 }
-.container textarea {
+.wrapper textarea {
     width: 70%;
     padding: 15px;
     margin: 5px 0 22px 0;

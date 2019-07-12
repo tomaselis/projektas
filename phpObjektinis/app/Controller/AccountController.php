@@ -3,37 +3,83 @@
 namespace App\Controller;
 
 use Core\Controller;
-use \App\Helper\Helper;
-use \App\Helper\InputHelper;
+use App\Helper\Helper;
+use App\Helper\InputHelper;
 
 
-
-Class AccountController extends Controller
+class AccountController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         echo 'ok';
     }
 
-
-    public function  registration()
+    public function registration()
     {
+        //load registration form
+        $form = new \App\Helper\FormHelper(url('/account/create'), 'post', 'wrapper');
+        $form->addInput([
+            'name' => 'name',
+            'type' => 'text',
+            'placeholder' => 'Name',
+        ], '', '', 'Register')
+            ->addInput([
+                'name' => 'email',
+                'type' => 'email',
+                'placeholder' => 'email@email.com',
+            ])
+            ->addInput([
+                'name' => 'password',
+                'type' => 'password',
+                'placeholder' => 'Type in password',
+            ])
+            ->addInput([
+                'name' => 'password2',
+                'type' => 'password',
+                'placeholder' => 'Repeat password',
+            ])
+//            ->addSelect([
+//                1 => 'admin',
+//                2 => 'master admin',
+//                3 => 'user'], 'city')
+            ->addButton([
+                'name' => 'register',
+                'type' => 'submit',
+                'value' => 'register',
+            ], "", "button", "");
+        $this->view->form = $form->get();
         $this->view->render('account/registration');
-
     }
 
     public function login()
     {
+        $form = new \App\Helper\FormHelper(url('/account/auth'), 'post', 'wrapper');
+        $form->addInput([
+            'name' => 'email',
+            'placeholder' => 'email@email.lt',
+            'type' => 'text',
+        ], '', '', 'Login')
+            ->addInput([
+                'name' => 'password',
+                'placeholder' => 'Password',
+                'type' => 'password',
+            ])
+
+            //type="submit"  value="login"
+            ->addButton([
+                'value' => 'login',
+                'type' => 'submit',
+                'class' =>'signupbtn',
+            ], "", "button", "");
+        $this->view->form = $form->get();
         $this->view->render('account/login');
     }
 
     public function create()
     {
-//        $data = $_POST;
-        //$helper = new \InputHelper(); nes static naudojame inputhelperyje
-
         if (inputHelper::checkEmail($_POST['email'])) {
-            if (InputHelper::PasswordMatch($_POST['password'], $_POST['password2'])){
-                $accountModelObject = new \App\Model\UserModel();
+            if (InputHelper::PasswordMatch($_POST['password'], $_POST['password2'])) {
+                $accountModelObject = new \App\Model\UsersModel();
                 $accountModelObject->setName($_POST['name']);
                 $accountModelObject->setEmail($_POST['email']);
                 $pass = \App\Helper\InputHelper::passwordGenerator($_POST['password']);
@@ -42,26 +88,42 @@ Class AccountController extends Controller
                 $accountModelObject->setActive(1);
                 $accountModelObject->save();
                 $helper = new Helper();
-                $helper->redirect('http://194.5.157.92/phpObjektinis/index.php');
+                $helper->redirect('post');
             }
         }
     }
 
-public function authentication()
-{
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $user = \App\Model\UserModel::verification($email, $password);
+    public function auth()
+    {
+        $password = $_POST['password'];
+        $email = $_POST['email'];
+        $user = \App\Model\UsersModel::verification($email, $password);
 
-    if (!empty($user)){
-
-        //vyks dalykai prisiloginus
-    }else{
-        //neteisingas prisijungimas
-        //redirectas i admin
+//        print_r($user);
+//        print_r($_SESSION);
+        if (!empty($user)) {
+            // vyks dalykai prisiloginus
+            $_SESSION['user'] = $user;
+            $helper = new Helper();
+            $helper->redirect(url('post'));
+        } else {
+            echo 'Could not log in';
+            //Neteisingas prisijungimas
+            //redirect i admin
+        }
     }
+
+    public function logout()
+    {
+        session_destroy();
+        $helper = new Helper();
+        $helper->redirect('post/');
+    }
+
 }
-    //redirectas
-    //kviesime postmodel klase ir create post metoda
-    //redirect i index metoda
-}
+
+//
+//->addTextarea([
+//    'placeholder' => 'Insert post...',
+//    'rows' => '20',
+//], 'content', '')

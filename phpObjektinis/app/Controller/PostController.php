@@ -37,24 +37,31 @@ class PostController extends Controller
 
     public function create()
     {
-        $this->view->render('posts/admin/create');
-
+        if (currentUser()) {
+            $this->view->render('posts/admin/create');
+        }else{
+            echo 404;
+        }
         //atvaizduoti create forma
     }
 
     public function store()
     {
-        $data = $_POST;
-        //print_r($_POST);
-        //die();
-        $postModelObject = new \App\Model\PostModel();
-        $postModelObject->setTitle($_POST['title']);
-        $postModelObject->setContent($_POST['content']);
-        $postModelObject->setImage($_POST['img']);
-        $postModelObject->setAuthorId(1);
-        $postModelObject->save();
-        $helper = new Helper();
-        $helper->redirect('http://194.5.157.92/phpObjektinis/index.php');
+        if (currentUser()) {
+            $data = $_POST;
+            //print_r($_POST);
+            //die();
+            $postModelObject = new \App\Model\PostModel();
+            $postModelObject->setTitle($_POST['title']);
+            $postModelObject->setContent($_POST['content']);
+            $postModelObject->setImage($_POST['img']);
+            $postModelObject->setAuthorId(1);
+            $postModelObject->save();
+            $helper = new Helper();
+            $helper->redirect('');
+        }else{
+            echo 404;
+        }
 
 
         //redirectas
@@ -64,11 +71,12 @@ class PostController extends Controller
 
     public function edit($id)
     {
+        if (currentUser()) {
 //        $id = (int)$_GET['id'];
-        $postModelObject = new \App\Model\PostModel();
-        $postModelObject->load($id);
-        $this->view->post = $postModelObject;
-        $this->view->render('posts/admin/edit');
+            $postModelObject = new \App\Model\PostModel();
+            $postModelObject->load($id);
+            $this->view->post = $postModelObject;
+            $this->view->render('posts/admin/edit');
 //        echo '<pre>';
 //        print_r($postModelObject);
 //        die();
@@ -77,31 +85,42 @@ class PostController extends Controller
 //        $postObject->load($id);
 //        $this->view->post = $postObject;
 //
+        }else {
+            echo 404;
+        }
     }
 
     public function update()
     {
-        $data = $_POST;
-        //print_r($_POST);
-        //die();
-        $postModelObject = new \App\Model\PostModel();
-        $postModelObject->setTitle($_POST['title']);
-        $postModelObject->setContent($_POST['content']);
-        $postModelObject->setImage($_POST['img']);
-        $postModelObject->setAuthorId(1);
-        $postModelObject->save($data['id']);
-        $helper = new Helper();
-        $helper->redirect('http://194.5.157.92/phpObjektinis/index.php');
+        if (currentUser()) {
+            $data = $_POST;
+            //print_r($_POST);
+            //die();
+            $postModelObject = new \App\Model\PostModel();
+            $postModelObject->setTitle($_POST['title']);
+            $postModelObject->setContent($_POST['content']);
+            $postModelObject->setImage($_POST['img']);
+            $postModelObject->setAuthorId(1);
+            $postModelObject->save($data['id']);
+            $helper = new Helper();
+            $helper->redirect('');
+        }else{
+            echo 404;
+        }
     }
 
 
     public function delete($id)
     {
+        if (currentUser()) {
 //    $id = (int)$_GET['id'];
-        $postModelObject = new \App\Model\PostModel();
-        $postModelObject->delete($id);
-        $helper = new Helper();
-        $helper->redirect('http://194.5.157.92/phpObjektinis/index.php');
+            $postModelObject = new \App\Model\PostModel();
+            $postModelObject->delete($id);
+            $helper = new Helper();
+            $helper->redirect('');
+        }else {
+            echo 404;
+        }
     }
 }
 //      $postModelObject->redirect('http://194.5.157.92/phpObjektinis/index.php/post');
