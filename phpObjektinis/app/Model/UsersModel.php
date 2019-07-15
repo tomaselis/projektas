@@ -12,6 +12,28 @@ class UsersModel
     private $password;
     private $role_id;
     private $active;
+    private $token;
+    private $tries_to_login;
+
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
+
+    public function getTriesToLogin()
+    {
+        return $this->tries_to_login;
+    }
+
+    public function setTriesToLogin($tries_to_login)
+    {
+        $this->tries_to_login = $tries_to_login;
+    }
 
     public function __construct()
     {
@@ -93,7 +115,41 @@ class UsersModel
     public static function verification($email, $password)
     {
         $db = new Database();
-        $db->select()->from('users')->where('email', $email)->andWhere('password', $password);
+        $db->select()->from('users')
+            ->where('email', $email)
+            ->andWhere('password', $password)
+            ->andWhere('active', 1);
         return $db->get();
     }
+
+    public function delete()
+    {
+        $db = new Database();
+        $setContent = "active = 0";
+        $db->update('user', $setContent)
+            ->where('id', $this->id);
+        $db->get();
+    }
+
+    public function load($id)
+    {
+        $this->db->select()->from('users')->where('id', $id);
+        $user = $this->db->get();
+        $this->id = $user->id;
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->password = $user->password;
+        $this->role_id = $user->role_id;
+        $this->token = $user->token;
+        $this->tries_to_login = $user->tries_to_login;
+        return $this;
+    }
+    public function loadByEmail($email)
+    {
+        $this->db->select('id')->from('users')->where('email', $email);
+        $user = $this->db->get();
+        $this->load($user->id);
+    }
+
+
 }

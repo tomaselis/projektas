@@ -58,7 +58,7 @@ class PostController extends Controller
             $postModelObject->setAuthorId(1);
             $postModelObject->save();
             $helper = new Helper();
-            $helper->redirect('');
+            $helper->redirect('post/');
         }else{
             echo 404;
         }
@@ -103,7 +103,7 @@ class PostController extends Controller
             $postModelObject->setAuthorId(1);
             $postModelObject->save($data['id']);
             $helper = new Helper();
-            $helper->redirect('');
+            $helper->redirect('post/');
         }else{
             echo 404;
         }
@@ -117,7 +117,7 @@ class PostController extends Controller
             $postModelObject = new \App\Model\PostModel();
             $postModelObject->delete($id);
             $helper = new Helper();
-            $helper->redirect('');
+            $helper->redirect('post/');
         }else {
             echo 404;
         }

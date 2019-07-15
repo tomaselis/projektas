@@ -36,7 +36,7 @@ class FormHelper
         foreach ($attributes as $key => $element){
             $html .= ' '.$key.'="'.$element.'"';
         }
-        $html .= ' >';
+        $html .= '>Continue</button>';
         if($class != ''){
             $html = $this->wrapElement($class, $html);
         }

@@ -87,5 +87,9 @@ class Database
     public function get(){
         $stmt =$this->execute();
         return $stmt->fetchObject();
+
+        // atsirado po penktadienio
+        $this->sql = '';
+        return $stmt;
     }
 }

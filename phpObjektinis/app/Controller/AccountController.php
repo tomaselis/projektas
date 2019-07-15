@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Core\Controller;
+use App\Model\UsersModel;
 use App\Helper\Helper;
 use App\Helper\InputHelper;
 
@@ -53,7 +54,7 @@ class AccountController extends Controller
 
     public function login()
     {
-        $form = new \App\Helper\FormHelper(url('/account/auth'), 'post', 'wrapper');
+        $form = new \App\Helper\FormHelper(url('account/auth'), 'post', 'wrapper');
         $form->addInput([
             'name' => 'email',
             'placeholder' => 'email@email.lt',
@@ -88,7 +89,7 @@ class AccountController extends Controller
                 $accountModelObject->setActive(1);
                 $accountModelObject->save();
                 $helper = new Helper();
-                $helper->redirect('post');
+                $helper->redirect('');
             }
         }
     }
@@ -97,6 +98,7 @@ class AccountController extends Controller
     {
         $password = $_POST['password'];
         $email = $_POST['email'];
+        $password = InputHelper::passwordGenerator($password);
         $user = \App\Model\UsersModel::verification($email, $password);
 
 //        print_r($user);
@@ -104,10 +106,24 @@ class AccountController extends Controller
         if (!empty($user)) {
             // vyks dalykai prisiloginus
             $_SESSION['user'] = $user;
+            UsersModel::resetLoginNumber($user->id);
             $helper = new Helper();
             $helper->redirect(url('post'));
         } else {
             echo 'Could not log in';
+            if(!InputHelper::uniqueEmail($email)){
+                $user = new UsersModel();
+                $user->loadByEmail($email);
+
+                if ($user->getTriesToLogin() > 4){
+                    $user->delete();
+                    //send Email - namu darbas
+                }else {
+                    $triesToLogin = $user->getTriesToLogin() + 1;
+                    $user->setTriesToLogin($triesToLogin);
+                    $user->save($user->getId());
+                }
+            }
             //Neteisingas prisijungimas
             //redirect i admin
         }
