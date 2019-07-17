@@ -12,6 +12,6 @@
 <!--    </div>-->
 <!--</form>-->
 
-
+<h2 class="headings">PLEASE REGISTER</h2>
 <?php
 echo $this->form;

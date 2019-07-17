@@ -10,6 +10,6 @@
 <!--    </div>-->
 <!--</form>-->
 
-
+<h2 class="headings">PLEASE LOG IN</h2>
 <?php
 echo $this->form;

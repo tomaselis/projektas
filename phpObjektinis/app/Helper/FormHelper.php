@@ -63,23 +63,48 @@ class FormHelper
         return $this;
     }
     //textarea
-    public function addTextarea($attributes, $name, $value, $class='', $label='')
+
+
+
+        public function addTextarea($attributes, $value = '', $label = "", $class = "")
     {
-        //implementuoti Label
         $html = '';
-        $html.= '<textarea name="'.$name.'"';
-        foreach ($attributes as $key => $element){
-            $html .= ' '.$key.'="'.$element.'"';
+        if ($label != '') {
+            if (isset($attributes['id'])) {
+                $for = 'for="' . $attributes['id'] . '"';
+            } else {
+                $for = "";
+            }
+            $html .= '<label ' . $for . '>' . $label . '</label>';
+        }
+        $html .= '<textarea ';
+        foreach ($attributes as $key => $element) {
+            $html .= ' ' . $key . '="' . $element . '"';
         }
         $html .= ' >';
         $html .= $value;
         $html .= '</textarea>';
-        if($class != ''){
+        if ($class != '') {
             $html = $this->wrapElement($class, $html);
         }
         $this->html .= $html;
         return $this;
     }
+//        //implementuoti Label
+//        $html = '';
+//        $html.= '<textarea name="'.$name.'"';
+//        foreach ($attributes as $key => $element){
+//            $html .= ' '.$key.'="'.$element.'"';
+//        }
+//        $html .= ' >';
+//        $html .= $value;
+//        $html .= '</textarea>';
+//        if($class != ''){
+//            $html = $this->wrapElement($class, $html);
+//        }
+//        $this->html .= $html;
+//        return $this;
+
     public function get()
     {
         $this->html .= '</form>';

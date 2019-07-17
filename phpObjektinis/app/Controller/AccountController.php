@@ -18,7 +18,7 @@ class AccountController extends Controller
     public function registration()
     {
         //load registration form
-        $form = new \App\Helper\FormHelper(url('/account/create'), 'post', 'wrapper');
+        $form = new \App\Helper\FormHelper(url('account/create'), 'post', 'wrapper');
         $form->addInput([
             'name' => 'name',
             'type' => 'text',
@@ -101,16 +101,16 @@ class AccountController extends Controller
         $password = InputHelper::passwordGenerator($password);
         $user = \App\Model\UsersModel::verification($email, $password);
 
-//        print_r($user);
-//        print_r($_SESSION);
+//print_r($user);
+//print_r($_SESSION);
         if (!empty($user)) {
             // vyks dalykai prisiloginus
             $_SESSION['user'] = $user;
-            UsersModel::resetLoginNumber($user->id);
+//            UsersModel::resetLoginNumber($user->id);
             $helper = new Helper();
             $helper->redirect(url('post'));
         } else {
-            echo 'Could not log in';
+            //echo 'Could not log in';
             if(!InputHelper::uniqueEmail($email)){
                 $user = new UsersModel();
                 $user->loadByEmail($email);

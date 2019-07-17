@@ -15,7 +15,7 @@
             <img src="https://cdn.logojoy.com/wp-content/uploads/2018/05/30164225/572.png">
         </div>
         <nav>
-            <a href="<?php echo url(''); ?>">Home</a>
+            <a href="<?php echo url('post'); ?>">Home</a>
             <a href="<?php echo url('post'); ?>">Blog</a>
             <?php if ($this->user):?>
             <a href="<?php echo url('post/create'); ?>">Create Post</a>
@@ -26,6 +26,9 @@
             <a href="<?php echo url('account/registration'); ?>">Register</a>
             <a href="<?php echo url('contact/contactForm'); ?>">Contact</a>
             <?php endif; ?>
+            <?php foreach ($this->categories as $category):?>
+                <a href="<?php echo url('category/show', $category->id) ?>"><?php echo $category->name; ?></a>
+            <?php endforeach; ?>
             <div class="left-side">
                 <?php if ($this->user): ?>
                     Hello, <?php echo $this->user->name; ?>

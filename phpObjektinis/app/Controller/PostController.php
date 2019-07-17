@@ -37,12 +37,37 @@ class PostController extends Controller
 
     public function create()
     {
-        if (currentUser()) {
-            $this->view->render('posts/admin/create');
-        }else{
-            echo 404;
-        }
+//        if (currentUser()) {
+//            $this->view->render('posts/admin/create');
+//        }else{
+//            echo 404;
+//        }
         //atvaizduoti create forma
+
+        $form = new \App\Helper\FormHelper(url('post/store'), 'post', 'wrapper');
+        $form->addInput([
+            'name' =>  'title',
+            'type' => 'text',
+            'placeholder' => 'Enter your Blog Title',
+            ])
+            ->addTextarea([
+                'name' => 'content',
+                'placeholder' => 'Write your blog here',
+                'rows'=> '10',
+                'cols'=> '50',
+            ])
+            ->addInput([
+                'name' =>  'img',
+                'type' => 'text',
+                'placeholder' => 'Please insert link for you image here',
+            ])
+            ->addButton([
+                'name' => 'register',
+                'type' => 'submit',
+                'value' => 'register',
+            ], "", "button", "");
+        $this->view->form = $form->get();
+        $this->view->render('posts/admin/create');
     }
 
     public function store()
@@ -71,6 +96,8 @@ class PostController extends Controller
 
     public function edit($id)
     {
+
+
         if (currentUser()) {
 //        $id = (int)$_GET['id'];
             $postModelObject = new \App\Model\PostModel();
