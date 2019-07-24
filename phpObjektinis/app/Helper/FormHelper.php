@@ -18,6 +18,10 @@ class FormHelper
             $html .= ' '.$key.'="'.$element.'"';
         }
         $html .= ' >';
+
+        if($label != ''){
+            $html .= '<label>'.$label.'</label>';
+        }
         if($class != ''){
             $html = $this->wrapElement($class, $html);
         }
@@ -77,6 +81,7 @@ class FormHelper
             }
             $html .= '<label ' . $for . '>' . $label . '</label>';
         }
+
         $html .= '<textarea ';
         foreach ($attributes as $key => $element) {
             $html .= ' ' . $key . '="' . $element . '"';

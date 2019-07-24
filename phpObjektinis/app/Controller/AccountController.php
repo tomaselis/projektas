@@ -18,7 +18,7 @@ class AccountController extends Controller
     public function registration()
     {
         //load registration form
-        $form = new \App\Helper\FormHelper(url('account/create'), 'post', 'wrapper');
+        $form = new \App\Helper\FormHelper(url('account/create'), 'post', 'wrapperReg');
         $form->addInput([
             'name' => 'name',
             'type' => 'text',
@@ -33,16 +33,14 @@ class AccountController extends Controller
                 'name' => 'password',
                 'type' => 'password',
                 'placeholder' => 'Type in password',
+                'class' => 'password'
             ])
             ->addInput([
                 'name' => 'password2',
                 'type' => 'password',
                 'placeholder' => 'Repeat password',
+                'class' => 'password2'
             ])
-//            ->addSelect([
-//                1 => 'admin',
-//                2 => 'master admin',
-//                3 => 'user'], 'city')
             ->addButton([
                 'name' => 'register',
                 'type' => 'submit',
@@ -88,10 +86,13 @@ class AccountController extends Controller
                 $accountModelObject->setRoleId(1);
                 $accountModelObject->setActive(1);
                 $accountModelObject->save();
-                $helper = new Helper();
-                $helper->redirect('');
+//                $helper = new Helper();
+//                $helper->redirect('post/');
+
             }
+
         }
+
     }
 
     public function auth()
@@ -125,6 +126,7 @@ class AccountController extends Controller
                 }
             }
             //Neteisingas prisijungimas
+
             //redirect i admin
         }
     }

@@ -3,6 +3,8 @@
 
 namespace App\Controller;
 
+use App\Model\CategoriesModel;
+use App\Model\PostModel;
 use Core\Controller;
 use \App\Helper\Helper;
 
@@ -37,11 +39,9 @@ class PostController extends Controller
 
     public function create()
     {
-//        if (currentUser()) {
+        if (currentUser()) {
 //            $this->view->render('posts/admin/create');
-//        }else{
-//            echo 404;
-//        }
+
         //atvaizduoti create forma
 
         $form = new \App\Helper\FormHelper(url('post/store'), 'post', 'wrapper');
@@ -68,6 +68,10 @@ class PostController extends Controller
             ], "", "button", "");
         $this->view->form = $form->get();
         $this->view->render('posts/admin/create');
+
+        }else{
+            echo 404;
+        }
     }
 
     public function store()
@@ -84,7 +88,7 @@ class PostController extends Controller
             $postModelObject->save();
             $helper = new Helper();
             $helper->redirect('post/');
-        }else{
+        } else {
             echo 404;
         }
 
@@ -96,58 +100,107 @@ class PostController extends Controller
 
     public function edit($id)
     {
-
-
         if (currentUser()) {
-//        $id = (int)$_GET['id'];
-            $postModelObject = new \App\Model\PostModel();
+            $postModelObject = new PostModel();
             $postModelObject->load($id);
-            $this->view->post = $postModelObject;
+
+            //        $this->view->render('posts/admin/edit');
+
+            $selectedCategories = [];
+            foreach ($postModelObject->getCategories() as $cat) {
+                $selectedCategories[] = $cat->category_id;
+            }
+            $form = new \App\Helper\FormHelper(url('post/update'), 'post', 'wrapper');
+            $form->addInput([
+                'name' => 'title',
+                'type' => 'text',
+                'placeholder' => 'Enter your Blog Title',
+                'value' => $postModelObject->getTitle()
+            ])
+                ->addInput([
+                    'name' => 'id',
+                    'type' => 'hidden',
+                    'value' => $postModelObject->getId()
+                ])
+                ->addTextarea([
+                    'name' => 'content',
+                    'placeholder' => 'Write your blog here',
+                    'rows' => '10',
+                    'cols' => '50',
+
+                ], $postModelObject->getContent())
+                ->addInput([
+                    'name' => 'img',
+                    'type' => 'text',
+                    'placeholder' => 'Please insert link for you image here',
+                    'value' => $postModelObject->getImage()
+                ]);
+
+            $allCategories = CategoriesModel::getCategories();
+            foreach ($allCategories as $category) {
+                if (in_array($category->id, $selectedCategories)) {
+                    $form->addInput([
+                        'name' => 'category[]',
+                        'type' => 'checkbox',
+                        'checked' => 'checked',
+                        'value' => $category->id,
+                    ], $category->name, 'cat');
+                } else {
+                    $form->addInput([
+                        'name' => 'category[]',
+                        'type' => 'checkbox',
+                        'value' => $category->id,
+                    ], $category->name, 'cat');
+                }
+            }
+            $form->addButton([
+                'name' => 'register',
+                'type' => 'submit',
+                'value' => 'register',
+            ], "", "button", "");
+
+            $this->view->form = $form->get();
             $this->view->render('posts/admin/edit');
-//        echo '<pre>';
-//        print_r($postModelObject);
-//        die();
-//        $id = (int)$_GET['id'];
-//        $postObject = new \App\Model\PostModel();
-//        $postObject->load($id);
-//        $this->view->post = $postObject;
-//
-        }else {
+
+        } else {
             echo 404;
         }
     }
 
     public function update()
     {
+//        debug($_POST['category']);
         if (currentUser()) {
-            $data = $_POST;
-            //print_r($_POST);
-            //die();
-            $postModelObject = new \App\Model\PostModel();
-            $postModelObject->setTitle($_POST['title']);
-            $postModelObject->setContent($_POST['content']);
-            $postModelObject->setImage($_POST['img']);
-            $postModelObject->setAuthorId(1);
-            $postModelObject->save($data['id']);
-            $helper = new Helper();
-            $helper->redirect('post/');
-        }else{
-            echo 404;
-        }
-    }
-
-
-    public function delete($id)
-    {
-        if (currentUser()) {
-//    $id = (int)$_GET['id'];
-            $postModelObject = new \App\Model\PostModel();
-            $postModelObject->delete($id);
-            $helper = new Helper();
-            $helper->redirect('post/');
-        }else {
-            echo 404;
+//
+            if (currentUser()) {
+                $data = $_POST;
+                $postModelObject = new \App\Model\PostModel();
+                $postModelObject->load($_POST['id']);
+                $postModelObject->setTitle($_POST['title']);
+                $postModelObject->setContent($_POST['content']);
+                $postModelObject->setAuthorId(1);
+                $postModelObject->setImage($_POST['img']);
+                $postModelObject->save();
+                $postModelObject->setCategories($_POST['category']);
+                $helper = new Helper();
+                $helper->redirect('post/');
+            } else {
+                echo 404;
+            }
         }
     }
 }
+//    public function delete($id)
+////    {
+////        if (currentUser()) {
+//////    $id = (int)$_GET['id'];
+////            $postModelObject = new \App\Model\PostModel();
+////            $postModelObject->delete($id);
+////            $helper = new Helper();
+////            $helper->redirect('post/');
+////        }else {
+////            echo 404;
+////        }
+////    }
+
 //      $postModelObject->redirect('http://194.5.157.92/phpObjektinis/index.php/post');

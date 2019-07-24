@@ -6,6 +6,9 @@
     <title>Your Blog</title>
     <link rel="stylesheet" type="text/css" href="http://194.5.157.92/phpObjektinis/resources/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="http://194.5.157.92/phpObjektinis/resources/css/style.css">
+    <script src="http://194.5.157.92/phpObjektinis/resources/js/jquery.js"></script>
+    <script src="http://194.5.157.92/phpObjektinis/resources/js/functions.js"></script>
+
 
 </head>
 <body>
@@ -21,19 +24,19 @@
             <a href="<?php echo url('post/create'); ?>">Create Post</a>
             <a href="<?php echo url('account/logout'); ?>">Logout</a>
                 <a href="<?php echo url('contact/contactForm'); ?>">Contact</a>
+                <a href="<?php echo url('admin/categories'); ?>">Categories</a>
             <?php else: ?>
                 <a href="<?php echo url('account/login'); ?>">Login</a>
             <a href="<?php echo url('account/registration'); ?>">Register</a>
             <a href="<?php echo url('contact/contactForm'); ?>">Contact</a>
+
             <?php endif; ?>
             <?php foreach ($this->categories as $category):?>
-                <a href="<?php echo url('category/show', $category->id) ?>"><?php echo $category->name; ?></a>
+                <a href="<?php echo url('category/show', $category->slug)?>"><?php echo $category->name; ?></a>
             <?php endforeach; ?>
-            <div class="left-side">
-                <?php if ($this->user): ?>
-                    Hello, <?php echo $this->user->name; ?>
-            <?php endif; ?>
-            </div>
         </nav>
+        <?php if ($this->user): ?>
+            Hi, <?php echo $this->user->name; ?>
+        <?php endif; ?>
     </div>
 </header>
